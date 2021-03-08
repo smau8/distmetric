@@ -18,7 +18,4 @@ setup(
     	"pandas",
     	"numpy",
     ],
-    entry_points={
-        "console_scripts": ["distmetric = distmetric.__main__:run"],
-    },
 )
