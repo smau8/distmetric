@@ -37,7 +37,6 @@ tre0.draw()
 ```
 
 Sample output (pandas dataframe rendered in markdown):
-```
 '|    | trees   |   Quartet intersection |
  |---:|:--------|-----------------------:|
  |  0 | 1, 2    |               0.942857 |
@@ -45,7 +44,7 @@ Sample output (pandas dataframe rendered in markdown):
  |  2 | 3, 4    |               0.733333 |
  |  3 | 4, 5    |               0.790476 |
  |  4 | 5, 6    |               0.942857 |'
-```
+
 
 ### Description or demonstration of user interaction
 The user will ideally import the package on Jupyter notebook and execute the different commands with the class objects.
