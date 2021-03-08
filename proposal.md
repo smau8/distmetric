@@ -26,7 +26,7 @@ Dependencies/libraries the code will utilize include:
 3. `toytree`: to read trees in newick format, render phylogenetic trees, and generate random trees for testing
 
 ### Data Description: Sample User input and output
-The user will provide `distmetric` with a series of phylogenetic trees in newick format as a string. Toytree will be used to parse and read each newick string as a phylogenetic tree. An example of a tree written in newick format is demonstrated below. After reading in each tree, `distmetric` will then process these trees by calculating distance metrics according to whichever method the user indicates (ex. quartets vs. Robinson-Foulds). Users can also indicate if they would like to calculate these distance metrics in a pairwise or random fashion (ex. if a user provides a number of genealogies along the same genome). 
+The user will provide `distmetric` with a series of phylogenetic trees in newick format as a string. Toytree will be used to parse and read each newick string as a phylogenetic tree. An example of a tree written in newick format is demonstrated below. After reading in each tree, `distmetric` will then process these trees by calculating distance metrics according to whichever method the user indicates (ex. quartets vs. Robinson-Foulds). Users can also indicate if they would like to calculate these distance metrics in a pairwise or random fashion (ex. if a user provides a number of genealogies along the same genome). The resulting calculated distance metrics will be stored and returned as a pandas dataframe. 
 
 Sample input:
 ```python
