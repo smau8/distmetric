@@ -29,16 +29,22 @@ Dependencies/libraries the code will utilize include:
 The user will provide `distmetric` with a series of phylogenetic trees in newick format as a string. Toytree will be used to parse and read each newick string as a phylogenetic tree. An example of a tree written in newick format is demonstrated below. After reading in each tree, `distmetric` will then process these trees by calculating distance metrics according to whichever method the user indicates (ex. quartets vs. Robinson-Foulds). Users can also indicate if they would like to calculate these distance metrics in a pairwise or random fashion (ex. if a user provides a number of genealogies along the same genome). 
 
 Sample input:
-```
+```python
 import toytree
 newick = "((r9:0.875,r8:0.875)100:0.125,(r7:0.875,(r6:0.75,(r5:0.625,(r4:0.5,(r3:0.375,(r2:0.25,(r1:0.125,r0:0.125)100:0.125)100:0.125)100:0.125)100:0.125)100:0.125)100:0.125)100:0.125);"
 tre0 = toytree.tree(newick)
 tre0.draw()
 ```
 
-Sample output (pandas dataframe viewed in markdown):
+Sample output (pandas dataframe rendered in markdown):
 ```
-'|    | trees   |   Quartet intersection |\n|---:|:--------|-----------------------:|\n|  0 | 1, 2    |               0.942857 |\n|  1 | 2, 3    |               0.92381  |\n|  2 | 3, 4    |               0.733333 |\n|  3 | 4, 5    |               0.790476 |\n|  4 | 5, 6    |               0.942857 |'
+'|    | trees   |   Quartet intersection |
+ |---:|:--------|-----------------------:|
+ |  0 | 1, 2    |               0.942857 |
+ |  1 | 2, 3    |               0.92381  |
+ |  2 | 3, 4    |               0.733333 |
+ |  3 | 4, 5    |               0.790476 |
+ |  4 | 5, 6    |               0.942857 |'
 ```
 
 ### Description or demonstration of user interaction
