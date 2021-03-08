@@ -5,11 +5,12 @@ The goal of the project is to create an installable package written in Python th
 
 ### Code Description and File Structure
 The package will organized with three types of files.
-1. Each `.py` file within the src folder with the exception of `sampling.py` will contain all relevant functions and class objects created for each tree comparison method (ex. `quartets.py`, `robinsonfoulds.py`). `sampling.py` will feature functions that can be used across all tree comparison methods (ex. indicating calculating distances between pairwise or random trees, generating random trees for testing)
+1. Each `.py` file within the src folder with the exception of `sampling.py` will contain all relevant functions and class objects created for each tree comparison method (ex. `quartets.py`, `robinsonfoulds.py`). `sampling.py` will feature functions that can be used across all tree comparison methods (ex. indicating calculating distances between pairwise or random trees, generating random trees for testing).
 2. Dunder files and `setup.py` help make the package installable and operational.
 3. `README.md` and `proposal.md` will contain informative write-ups for this package.
 
 Current file structure:
+See files for class object and function definitions used in this package so far.
 ```bash
 .
 ├── README.md
@@ -48,7 +49,7 @@ Sample output (pandas dataframe rendered in markdown):
 
 ### Description or demonstration of user interaction
 The user will ideally import the package on Jupyter notebook and execute the different commands with the class objects.
-```
+```python
 import distmetric
 
 quartets.get_quartets()
