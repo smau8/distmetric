@@ -37,13 +37,13 @@ tre0.draw()
 ```
 
 Sample output (pandas dataframe rendered in markdown):
-'|    | trees   |   Quartet intersection |
+ |    | trees   |   Quartet intersection |
  |---:|:--------|-----------------------:|
  |  0 | 1, 2    |               0.942857 |
  |  1 | 2, 3    |               0.92381  |
  |  2 | 3, 4    |               0.733333 |
  |  3 | 4, 5    |               0.790476 |
- |  4 | 5, 6    |               0.942857 |'
+ |  4 | 5, 6    |               0.942857 |
 
 
 ### Description or demonstration of user interaction
