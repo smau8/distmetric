@@ -11,23 +11,35 @@ import itertools
 import os
 
 
-class quartets:
+# class names should be CamelCase
+class Quartets:
     """
     class object to calculate phylogenetic tree distances with the quartet method
     """
-    def __init__(self):
-        self.output = pd.DataFrame(columns = ['trees', 'Quartet intersection']) 
+    def __init__(self, trees):
+        # store inputs
+        self.trees = trees
+
+        # the dataframe to be filled with results
+        # do not include spaces in column names
+        self.output = pd.DataFrame(columns = ['trees', 'Quartet_intersection']) 
                
-        self.get_quartets()
-        self.compare_quartets()
-        self.run()
+        # because .run() calls the other two functions they do not 
+        # need to be called here.
+        # self.get_quartets()
+        # self.compare_quartets()
+
+        # better to not automatically call run for now, it will be easier
+        # to debug your code if you can init an instance of your class and
+        # then run each function of the class one at a time.
+        # self.run()
         # to be continued
         
     def get_quartets(self):
-    """
-    Find all possible quartets for that particular
-    phylogenetic tree
-    """
+        """
+        Find all possible quartets for that particular
+        phylogenetic tree
+        """       
         # store all quartets in this SET
         qset = set([])
     
@@ -62,11 +74,11 @@ class quartets:
 
         
     def compare_quartets(self):
-    """
-    Compare two sets of quartets generated from two
-    phylogenetic trees. (to be continued, need to 
-    store output in __init__ object)
-    """
+        """
+        Compare two sets of quartets generated from two
+        phylogenetic trees. (to be continued, need to 
+        store output in __init__ object)
+        """
         i=0
         compare_quartets_df = pd.DataFrame(columns = ['trees', 'Quartet intersection']) 
         for i in range (0, int(nquartets)-1):
@@ -81,9 +93,29 @@ class quartets:
         return compare_quartets_df
 
 
-    def run(self, arg):
-    """
-    Define run function
-    """
-        self.get_quartets(arg)
-        self.compare_quartets(arg)
+    # this probably doesn't need an arg since you can pass all args
+    # to the class constructor when you init an instance of Quartets class
+    def run(self):
+        """
+        Define run function
+        """
+        self.get_quartets()
+        self.compare_quartets()
+
+
+
+if __name__ == "__main__":
+
+    # generate ten random trees
+    TREES = [
+        toytree.rtree.unittree(ntips=10, treeheight=1e6)    
+        for i in range(10)
+    ]
+
+    # init a Quartets class instance
+    quart = Quartets(TREES)
+
+    # show that quart has a .trees attribute
+    print(quart.trees)
+
+    # ... now do something with quart...
