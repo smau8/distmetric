@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-A function calculating phylogenetic tree distances based on the quartet method. 
+A function calculating phylogenetic tree distances based on the quartet method.
 """
 
 import toytree
@@ -10,91 +10,93 @@ import pandas as pd
 import itertools
 import os
 
+from .Sample import Sample, Generator
 
-# class names should be CamelCase
-class Quartets:
+
+class Quartets():
     """
-    class object to calculate phylogenetic tree distances with the quartet method
+    Class object to calculate phylogenetic tree distances with the quartet method
     """
-    def __init__(self, trees):
+    def __init__(self, trees, sampmethod):
         # store inputs
         self.trees = trees
+        self.sampmethod = sampmethod
 
-        # the dataframe to be filled with results
-        # do not include spaces in column names
-        self.output = pd.DataFrame(columns = ['trees', 'Quartet_intersection']) 
-               
-        # because .run() calls the other two functions they do not 
-        # need to be called here.
-        # self.get_quartets()
-        # self.compare_quartets()
-
-        # better to not automatically call run for now, it will be easier
-        # to debug your code if you can init an instance of your class and
-        # then run each function of the class one at a time.
-        # self.run()
-        # to be continued
+        # store output
+        self.getquartetsout = {}
+        self.samporder = []
+        self.output = pd.DataFrame(columns = ['trees', 'Quartet_intersection'])
+        
         
     def get_quartets(self):
         """
-        Find all possible quartets for that particular
-        phylogenetic tree
+        Find all possible quartets for each phylogenetic tree
+        from user input and store in self.getquartetsout dictionary
+        with key as tree # and value as quartet set.
         """       
-        # store all quartets in this SET
-        qset = set([])
-    
-        # get a SET with all tips in the tree
-        fullset = set(ttre.get_tip_labels())
-    
-        # get a SET of the descendants from each internal node
-        for node in ttre.idx_dict.values():   
-
-            # skip leaf nodes
-            if not node.is_leaf():
+        # iterate over each tree in input
+        for idx in range(len(self.trees)):
+            ttre = self.trees[idx]
             
-                children = set(node.get_leaf_names())
-                prod = itertools.product(
-                    itertools.combinations(children, 2),
-                    itertools.combinations(fullset - children, 2),
-                )
-                quartets = set([tuple(itertools.chain(*i)) for i in prod])
-                qset = qset.union(quartets)
-
-        # order tups in sets
-        sorted_set = set()
-        for qs in qset:
-            if np.argmin(qs) > 1:
-                tup = tuple(sorted(qs[2:]) + sorted(qs[:2]))
-                sorted_set.add(tup)
-            else:
-                tup = tuple(sorted(qs[:2]) + sorted(qs[2:]))
-                sorted_set.add(tup)            
+            # store all quartets in this SET
+            qset = set([])
     
-        return sorted_set        
+            # get a SET with all tips in the tree
+            fullset = set(ttre.get_tip_labels())
+    
+            # get a SET of the descendants from each internal node
+            for node in ttre.idx_dict.values():   
+
+                # skip leaf nodes
+                if not node.is_leaf():
+            
+                    children = set(node.get_leaf_names())
+                    prod = itertools.product(
+                        itertools.combinations(children, 2),
+                        itertools.combinations(fullset - children, 2),
+                    )
+                    quartets = set([tuple(itertools.chain(*i)) for i in prod])
+                    qset = qset.union(quartets)
+
+            # order tups in sets
+            sorted_set = set()
+            for qs in qset:
+                if np.argmin(qs) > 1:
+                    tup = tuple(sorted(qs[2:]) + sorted(qs[:2]))
+                    sorted_set.add(tup)
+                else:
+                    tup = tuple(sorted(qs[:2]) + sorted(qs[2:]))
+                    sorted_set.add(tup)            
+            self.getquartetsout[idx] = sorted_set
+        return self.getquartetsout    
 
         
     def compare_quartets(self):
         """
-        Compare two sets of quartets generated from two
-        phylogenetic trees. (to be continued, need to 
-        store output in __init__ object)
+        Compare two sets of quartets generated from each pair of
+        phylogenetic trees based on pairwise or random sampling order.
+        Return data frame with tree # and quartet metric. 
         """
-        i=0
-        compare_quartets_df = pd.DataFrame(columns = ['trees', 'Quartet intersection']) 
-        for i in range (0, int(nquartets)-1):
-            q0 = get_quartets(toytree.tree(str(trefilespath) + "/tree" + str(i+1) + ".tre"))
-            q1 = get_quartets(toytree.tree(str(trefilespath) + "/tree" + str(i+2) + ".tre"))
+        # generate sampling order depending on pairwise or random user input
+        samporder = Sample(len(self.trees), self.sampmethod)
+        self.samporder = samporder.sampling()
+        
+        # iterate over each pair of trees depending on sampling order
+        for idx in range(len(self.trees)-1):           
+            
+            q0 = self.getquartetsout[self.samporder[idx]]
+            q1 = self.getquartetsout[self.samporder[idx+1]]
+        
             diffs = q0.symmetric_difference(q1)
             len(diffs)
-            compare_quartets_df = compare_quartets_df.append({'trees' : str(i+1)+ ", " + str(i+2), 'Quartet intersection' : len(q0.intersection(q1)) / len(q0)},  
-                                ignore_index = True)
-            pd.set_option("display.max_rows", None, "display.max_columns", None)
-            compare_quartets_df.to_csv(str(trefilespath)+ "compare_quartets" + str(nquartets) + ".csv", index=False)
-        return compare_quartets_df
-
-
-    # this probably doesn't need an arg since you can pass all args
-    # to the class constructor when you init an instance of Quartets class
+            
+            self.output = self.output.append({'trees' : str(self.samporder[idx])+ ", " + str(self.samporder[idx+1]), 
+                                              'Quartet_intersection' : len(q0.intersection(q1)) / len(q0)},
+                                             ignore_index = True)
+        # return data frame as output
+        return self.output        
+        
+        
     def run(self):
         """
         Define run function
@@ -118,4 +120,8 @@ if __name__ == "__main__":
     # show that quart has a .trees attribute
     print(quart.trees)
 
-    # ... now do something with quart...
+    # run quartets
+    quart.run()
+
+    # display results
+    quart.output()
