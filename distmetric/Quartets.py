@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-A function calculating phylogenetic tree distances based on the quartet method.
+A function calculating phylogenetic tree distances based on the quartet method. 
 """
 
 import toytree
@@ -19,7 +19,8 @@ class Quartets():
     """
     def __init__(self, trees, sampmethod):
         # store inputs
-        self.trees = trees
+        self.trees = toytree.mtree(trees)
+        self.treelist = self.trees.treelist
         self.sampmethod = sampmethod
 
         # store output
@@ -36,7 +37,7 @@ class Quartets():
         """       
         # iterate over each tree in input
         for idx in range(len(self.trees)):
-            ttre = self.trees[idx]
+            ttre = self.treelist[idx]
             
             # store all quartets in this SET
             qset = set([])
@@ -82,7 +83,7 @@ class Quartets():
         self.samporder = samporder.sampling()
         
         # iterate over each pair of trees depending on sampling order
-        for idx in range(len(self.trees)-1):           
+        for idx in range(len(self.trees)-1): 
             
             q0 = self.getquartetsout[self.samporder[idx]]
             q1 = self.getquartetsout[self.samporder[idx+1]]
@@ -93,6 +94,7 @@ class Quartets():
             self.output = self.output.append({'trees' : str(self.samporder[idx])+ ", " + str(self.samporder[idx+1]), 
                                               'Quartet_intersection' : len(q0.intersection(q1)) / len(q0)},
                                              ignore_index = True)
+        #pd.set_option("display.max_rows", None, "display.max_columns", None)
         # return data frame as output
         return self.output        
         
@@ -103,25 +105,3 @@ class Quartets():
         """
         self.get_quartets()
         self.compare_quartets()
-
-
-
-if __name__ == "__main__":
-
-    # generate ten random trees
-    TREES = [
-        toytree.rtree.unittree(ntips=10, treeheight=1e6)    
-        for i in range(10)
-    ]
-
-    # init a Quartets class instance
-    quart = Quartets(TREES)
-
-    # show that quart has a .trees attribute
-    print(quart.trees)
-
-    # run quartets
-    quart.run()
-
-    # display results
-    quart.output()
