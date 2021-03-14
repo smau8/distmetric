@@ -14,8 +14,8 @@ setup(
     description="A package for calculating phylogenetic tree distances",
     classifiers=["Programming Language :: Python :: 3"],
     install_requires=[
-    	"toytree",
     	"pandas",
     	"numpy",
+    	"toytree",
     ],
 )
