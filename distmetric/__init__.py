@@ -6,5 +6,5 @@ init file for distmetric package
 
 __version__ = "0.0.1"
 
-from distmetric.quartets import quartets
-from distmetric.sampling import generate_randomtrees, pairwise_sampling, random_sampling
+from distmetric.Quartets import Quartets
+from distmetric.Sample import Sample, Generator
