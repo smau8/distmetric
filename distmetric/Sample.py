@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-Sampling methods accessible for all phylogenetic methods/metrics.
+Methods to sample and generate random trees accessible 
+to all phylogenetic methods/metrics in package.
 """
 
 import toytree
@@ -9,34 +10,63 @@ import numpy as np
 import pandas as pd
 
 
-def generate_randomtrees(ntrees, trefilepath):
+class Sample:
     """
-    Generate a specified number of random trees (defined as ntrees)
-    and write these trees as individual tree files to the destination
-    designated with trefilepath.
+    Sampling methods accessible for all phylogenetic methods/metrics
     """
-    i=0
-    generate_randomtrees_df = pd.DataFrame(columns = ['treetest #', 'newick']) 
-    for i in range (0, int(npairs)):
-        tree = toytree.rtree.unittree(10, seed=i)
-        #print(tree)
-        generate_randomtrees_df = generate_randomtrees_df.append({'treetest #' : "tree" + str(i+1), 'newick' : tree.write()},  
-                ignore_index = True)
-        tree.write(trefilepath + str(i+1) + ".tre", tree_format=0)
-        i = i+1
-        #print(i)
-    return generate_randomtrees_df
+    def __init__(self, ntrees, method):
+        # store input
+        self.ntrees = ntrees
+        self.method = method
 
-def pairwise_sampling(ntrees):
-    """
-    Generate order/pairings to calculate phylogenetic tree distances 
-    between neighboring genealogies.
-    """
-	pass
+        # store output
+        self.pairwisesamplingout = np.zeros((self.ntrees, 1), dtype=int)
+        self.randomsamplingout = np.zeros((self.ntrees, 1), dtype=int)
 
-def random_sampling(ntrees):
+    
+    def sampling(self):
+        """
+        Generate pairwise order/pairings to calculate phylogenetic tree distances 
+        (ex. 10 trees provided, compare tree 1 & 2, compare 2 & 3 etc.)
+    
+        OR Generate random order/pairings to calculate phylogenetic tree distances 
+        (ex. 10 trees provided, compare tree 1 & 5, compare 5 & 6 etc.)
+        """
+        if self.method == "pairwise":
+            self.pairwisesamplingout = np.arange(start=0, stop=self.ntrees, step=1)
+            return self.pairwisesamplingout
+
+        if self.method == "random":
+            self.randomsamplingout = np.random.choice(self.ntrees, size=self.ntrees, replace=False)
+            return self.randomsamplingout
+
+
+class Generator:
     """
-    Generate order/pairings to calculate phylogenetic tree distances 
-    between random genealogies.
+    Generate random trees.
     """
-	pass
+    def __init__(self, ntrees, ntips=10, treeheight=1e6, tree_format=0):
+        # store input
+        self.ntrees = ntrees
+        self.ntips = ntips
+        self.treeheight = treeheight
+        self.tree_format = tree_format
+        #self.writefile = writefile
+
+        # store output
+        self.treestringout = ""
+        self.trees = []
+                
+    def get_randomtrees(self):
+        """
+        Generate a specified number of random trees (indicated with ntrees)
+        and write these trees into one list. 
+        """
+        # output
+        self.trees = [
+            toytree.rtree.unittree(ntips=self.ntips, treeheight=self.treeheight)    
+            for i in range(self.ntrees)
+        ]
+    
+        return(self.trees)
+
