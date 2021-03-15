@@ -10,12 +10,15 @@ from setuptools import setup
 # build command
 setup(
     name="distmetric",
-    version="0.0.1",
+    version="0.0.2",
     description="A package for calculating phylogenetic tree distances",
     classifiers=["Programming Language :: Python :: 3"],
     install_requires=[
     	"pandas",
     	"numpy",
     	"toytree",
+        "toyplot",
+        "matplotlib"
     ],
 )
+
