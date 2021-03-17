@@ -8,4 +8,4 @@ __version__ = "0.0.2"
 
 from distmetric.Quartets import Quartets
 from distmetric.Sample import Sample, Generator
-from distmetric.SummaryStat import SumStats
+from distmetric.SumStat import SumStat

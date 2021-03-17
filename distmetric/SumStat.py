@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-A function calculating to output mean standard deviations and histograms of phylogenetic tree distances. 
+A function to output summary statistics after calculating phylogenetic tree distances. 
 """
 
 #importing packages
@@ -20,30 +20,37 @@ from .Quartets import Quartets
 
 #class to get mean, std, and output a histogram
 
-class SumStats():
+class SumStat():
 
     #Intializing self function
-    def __init__(self,df,column_name):
+    def __init__(self, df, column_name, mean, std):
         # store input
         self.df = df #dataframe
-        self.column_name = column_name #column to be calculated upon and plotted 
+        self.column_name = column_name #column to be calculated upon and plotted
+        self.mean = ""
+        self.std = "" 
 
     #getting mean and standard deviation
-    def SumStat(self):
+    def mean(self):
         """
-        Function that takes an input of a dataframe and returns the mean and standard deviation for distance metrics
+        Function that takes an input of a dataframe and returns the mean for distance metrics
         """
         #saving mean
-        mean = round(self.df.mean()[0],4)
-        #saving standard deviation
-        sd = round(self.df.std()[0],4)
-
-        #returning results
-        print('mean quartet distance:',mean,' standard deviation:',sd)
-        return mean, sd
+        mean = df[column_name].mean()
+        #returning result
+        return self.mean
     
+    def std(self):
+        """
+        Function that takes an input of a dataframe and returns the standard deviation for distance metrics
+        """
+        #saving standard deviation
+        self.std = df[column_name].std()
+        # return result
+        return self.std
+
     #outputting histogram and writing the mean and standard deviation
-    def SumHist(self):
+    def histogram(self):
         """
         Function that takes dataframe as input and plots histogram of distance metrics with mean and standard deviation
         """
