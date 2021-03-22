@@ -18,7 +18,6 @@ setup(
     	"numpy",
     	"toytree",
         "toyplot",
-        "matplotlib"
     ],
 )
 

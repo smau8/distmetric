@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-A function calculating phylogenetic tree distances based on the quartet method. 
+Calculating phylogenetic tree distances based on the quartet method. 
 """
 
 import toytree
@@ -17,12 +17,19 @@ class Quartets():
     """
     Class object to calculate phylogenetic tree distances with the quartet method
     """
-    def __init__(self, trees, sampmethod):
+    def __init__(self, trees, sampmethod, consensustree=None):
         # store inputs
-        self.trees = toytree.mtree(trees)
+        self.trees = toytree.mtree(trees) 
+        # get consensus tree (if given the use user's consenus tree, or else, get consensus tree from trees provided in user input)
+        self.consensustree = consensustree
+        if self.consensustree == None:
+            self.consensustree = self.trees.get_consensus_tree()
+        # append consensus tree as last in tree list
+        self.trees.treelist.append(self.consensustree)
+        
         self.treelist = self.trees.treelist
         self.sampmethod = sampmethod
-
+        
         # store output
         self.getquartetsout = {}
         self.samporder = []
@@ -33,7 +40,7 @@ class Quartets():
         """
         Find all possible quartets for each phylogenetic tree
         from user input and store in self.getquartetsout dictionary
-        with key as tree # and value as quartet set.
+        with key as tree #/consensus and value as quartet set.
         """       
         # iterate over each tree in input
         for idx in range(len(self.trees)):
@@ -68,7 +75,13 @@ class Quartets():
                 else:
                     tup = tuple(sorted(qs[:2]) + sorted(qs[2:]))
                     sorted_set.add(tup)            
-            self.getquartetsout[idx] = sorted_set
+            
+            # if last tree, this means this is the quartet set for the consensus tree
+            if idx == len(self.trees)-1:
+                self.getquartetsout['consensus'] = sorted_set
+            # if not, treat quartet set as set for a normal tree that will soon be used for comparisons
+            else:
+                self.getquartetsout[idx] = sorted_set
         return self.getquartetsout    
 
         
@@ -78,22 +91,33 @@ class Quartets():
         phylogenetic trees based on pairwise or random sampling order.
         Return data frame with tree # and quartet metric. 
         """
-        # generate sampling order depending on pairwise or random user input
-        samporder = Sample(len(self.trees), self.sampmethod)
-        self.samporder = samporder.sampling()
+        # follow sampling order if user wants to calculate distances in pairwise/random fashion
+        if self.sampmethod == "pairwise" or self.sampmethod == "random":
+            # generate sampling order depending on pairwise or random user input
+            # define max length as self.trees - 1 because last tree in list is consensus tree
+            length = len(self.trees)-1
+            samporder = Sample(length, self.sampmethod)
+            self.samporder = samporder.sampling()
         
-        # iterate over each pair of trees depending on sampling order
-        for idx in range(len(self.trees)-1): 
-            
-            q0 = self.getquartetsout[self.samporder[idx]]
-            q1 = self.getquartetsout[self.samporder[idx+1]]
+            # iterate over each pair of trees depending on sampling order
+            for idx in range(len(self.trees)-2):             
+                q0 = self.getquartetsout[self.samporder[idx]]
+                q1 = self.getquartetsout[self.samporder[idx+1]]
         
-            diffs = q0.symmetric_difference(q1)
-            len(diffs)
+                # diffs = q0.symmetric_difference(q1)
+                # len(diffs)
             
-            self.output = self.output.append({'trees' : str(self.samporder[idx])+ ", " + str(self.samporder[idx+1]), 
-                                              'Quartet_intersection' : len(q0.intersection(q1)) / len(q0)},
-                                             ignore_index = True)
+                self.output = self.output.append({'trees' : str(self.samporder[idx])+ ", " + str(self.samporder[idx+1]), 
+                                                  'Quartet_intersection' : len(q0.intersection(q1)) / len(q0)},
+                                                 ignore_index = True)
+        # compares each tree with consensus
+        else:
+            consensus = self.getquartetsout['consensus']
+            for idx in range(len(self.trees)-1):
+                q0 = self.getquartetsout[idx]
+                self.output = self.output.append({'trees' : str(idx) + ", consensus", 
+                                                  'Quartet_intersection' : len(q0.intersection(consensus)) / len(consensus)},
+                                                 ignore_index = True)
         #pd.set_option("display.max_rows", None, "display.max_columns", None)
         # return data frame as output
         return self.output        

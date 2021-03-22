@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 """
-Methods to sample and generate random trees accessible 
-to all phylogenetic methods/metrics in package.
+Sampling and generating random trees for phylogenetic calcluations downstream
 """
 
 import toytree
@@ -11,9 +10,6 @@ import pandas as pd
 
 
 class Sample:
-    """
-    Sampling methods accessible for all phylogenetic methods/metrics
-    """
     def __init__(self, ntrees, method):
         # store input
         self.ntrees = ntrees
@@ -22,7 +18,6 @@ class Sample:
         # store output
         self.pairwisesamplingout = np.zeros((self.ntrees, 1), dtype=int)
         self.randomsamplingout = np.zeros((self.ntrees, 1), dtype=int)
-
     
     def sampling(self):
         """
@@ -31,6 +26,9 @@ class Sample:
     
         OR Generate random order/pairings to calculate phylogenetic tree distances 
         (ex. 10 trees provided, compare tree 1 & 5, compare 5 & 6 etc.)
+
+        Consensus option is for users to calculate distance metrics between each tree
+        relative to the consensus tree
         """
         if self.method == "pairwise":
             self.pairwisesamplingout = np.arange(start=0, stop=self.ntrees, step=1)
@@ -39,6 +37,10 @@ class Sample:
         if self.method == "random":
             self.randomsamplingout = np.random.choice(self.ntrees, size=self.ntrees, replace=False)
             return self.randomsamplingout
+
+        if self.method == "consensus":
+            return self.method
+
 
 
 class Generator:
@@ -51,7 +53,6 @@ class Generator:
         self.ntips = ntips
         self.treeheight = treeheight
         self.tree_format = tree_format
-        #self.writefile = writefile
 
         # store output
         self.treestringout = ""
@@ -62,11 +63,13 @@ class Generator:
         Generate a specified number of random trees (indicated with ntrees)
         and write these trees into one list. 
         """
-        # output
+        # output trees
         self.trees = [
             toytree.rtree.unittree(ntips=self.ntips, treeheight=self.treeheight)    
             for i in range(self.ntrees)
         ]
+        # save as toytree multitree
+        #self.trees = toytree.mtree(self.trees)
     
-        return(self.trees)
+        return self.trees
 
