@@ -28,7 +28,7 @@ randomtrees = TREES.get_randomtrees()
 # an example of what the trees look like:
 randomtrees[0].draw();
 ```
-[tree](https://github.com/smau8/distmetric/blob/main/demos/demo-working-example1.png)
+![tree](https://github.com/smau8/distmetric/blob/main/demos/demo-working-example1.png)
 
 ```python
 # calculate quartet distances in a pairwise fashion
@@ -93,4 +93,4 @@ print(stats1.get_mean())
 print(stats1.get_std())
 stats1.histogram()
 ```
-[histogram](https://github.com/smau8/distmetric/blob/main/demos/demo-working-example2.png)
+![histogram](https://github.com/smau8/distmetric/blob/main/demos/demo-working-example2.png)
