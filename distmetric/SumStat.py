@@ -55,5 +55,5 @@ class SumStat():
         axes.x.ticks.show = True
         axes.y.ticks.show = True
         #Binning values using np.histogram
-        self.mark = axes.bars(np.histogram(self.df[self.column_name]))
+        self.mark = axes.bars(np.histogram(self.df[self.column_name], density=True))
         return self.mark
