@@ -25,13 +25,13 @@ import distmetric
 # generate 10 random trees as input with Generator class object
 TREES = distmetric.Generator(10)
 randomtrees = TREES.get_randomtrees()
-# an example of what the trees look like:
-randomtrees[0].draw();
+# examining what the trees look like:
+toytree.mtree(TREES).draw(ts = 'c', nrows=2, ncols=5);
 ```
 ![tree](https://github.com/smau8/distmetric/blob/main/demos/demo-working-example1.png)
 
 ```python
-# calculate quartet distances in a pairwise fashion
+# calculate quartet distances between each tree and the consensus tree
 quart = distmetric.Quartets(randomtrees, "consensus")
 quart.run()
 df1 = quart.output
@@ -51,7 +51,7 @@ df1 = quart.output
 |  9 | 9, consensus |               0.72381  |
 
 ```python
-# calculate Robinson Foulds distances in a random fashion
+# calculate Robinson Foulds distances in a pairwise fashion
 rfs = distmetric.RF(randomtrees, "pairwise")
 rfs.run()
 rfs.output
@@ -70,6 +70,7 @@ rfs.output
 |  8 | 8, 9    | 0.166667 |
 
 ```python
+# calculate Robinson Foulds distances in a random fashion
 rfs3 = distmetric.RF(randomtrees, "random")
 rfs3.run()
 df3 = rfs3.output
