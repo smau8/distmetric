@@ -45,6 +45,7 @@ class SumStat():
     def histogram(self):
         """
         Function that takes dataframe as input and plots histogram of distance metrics with mean and standard deviation
+        Will potentially normalize using mathematical method
         """
         #setting plot parameters
         canvas = toyplot.Canvas(width=600, height=400) 
@@ -57,3 +58,9 @@ class SumStat():
         #Binning values using np.histogram
         self.mark = axes.bars(np.histogram(self.df[self.column_name], density=True))
         return self.mark
+
+    def stacked_plot(self):
+    	"""
+    	Function that takes dataframe as input and plots stacked plots from toyplot
+    	"""
+    	pass
