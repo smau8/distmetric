@@ -63,4 +63,6 @@ class SumStat():
     	"""
     	Function that takes dataframe as input and plots stacked plots from toyplot
     	"""
-    	pass
+    	#canvas = toyplot.Canvas(width=600, height=400)
+        #axes = 
+        pass
