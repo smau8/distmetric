@@ -16,53 +16,44 @@ import toyplot      #plotting
 class SumStat():
     def __init__(self, df, column_name):
         # store input
-        self.df = df #dataframe
-        self.column_name = column_name #column to be calculated upon and plotted
-        
+        self.df = df                                     #dataframe
+        self.column_name = column_name                   #column to be calculated upon and plotted
+        self.arr = np.array(self.df[self.column_name])   #store dataframe column as numpy array
+
         # store output
-        self.mean = ""
-        self.std = "" 
+        self.mean = np.mean(self.arr)
+        self.std = np.std(self.arr)
+        self.min = np.amin(self.arr)
+        self.max = np.amax(self.arr)
         self.mark = ""
 
-    def get_mean(self):
+    def get_sumstat(self):
         """
-        Function that takes an input of a dataframe and returns the mean for distance metrics
+        Returns mean, standard deviation, minimum and maximum values for inputted distance metrics
         """
-        #saving mean
-        self.mean = self.df[self.column_name].mean()
-        #returning result
-        return self.mean
-    
-    def get_std(self):
-        """
-        Function that takes an input of a dataframe and returns the standard deviation for distance metrics
-        """
-        #saving standard deviation
-        self.std = self.df[self.column_name].std()
-        # return result
-        return self.std
+        #returning results
+        return "mean: {}".format(self.mean), "std: {}".format(self.std), "min: {}".format(self.min), "max: {}".format(self.max)
 
     def histogram(self):
         """
         Function that takes dataframe as input and plots histogram of distance metrics with mean and standard deviation
-        Will potentially normalize using mathematical method
+        Will potentially normalize using mathematical method or already normalized RFs/Quartets as input?
         """
-        #setting plot parameters
+        # setting plot parameters
         canvas = toyplot.Canvas(width=600, height=400) 
-        #making sure axes are cartesian coordinates and labelling axes
-        axes = canvas.cartesian(xlabel= self.column_name,
-                            ylabel="Frequency") 
-        #show axes ticks
+        # making sure axes are cartesian coordinates and labelling axes
+        axes = canvas.cartesian(xlabel= self.column_name, ylabel="Frequency") 
+        # show axes ticks
         axes.x.ticks.show = True
         axes.y.ticks.show = True
-        #Binning values using np.histogram
-        self.mark = axes.bars(np.histogram(self.df[self.column_name], density=True))
+        # Binning values using np.histogram
+        self.mark = axes.bars(np.histogram(self.arr,range=(0,1), bins=20))
         return self.mark
 
-    def stacked_plot(self):
-    	"""
-    	Function that takes dataframe as input and plots stacked plots from toyplot
-    	"""
-    	#canvas = toyplot.Canvas(width=600, height=400)
+    def consensus_cloud_tree(self, trees, consensus):
+        """
+        Function that takes dataframe as input and plots stacked plots from toyplot
+        """
+        #canvas = toyplot.Canvas(width=600, height=400)
         #axes = 
-        pass
+    pass
