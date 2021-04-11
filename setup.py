@@ -10,7 +10,7 @@ from setuptools import setup
 # build command
 setup(
     name="distmetric",
-    version="0.0.2",
+    version="0.0.3",
     description="A package for calculating phylogenetic tree distances",
     classifiers=["Programming Language :: Python :: 3"],
     install_requires=[
