@@ -49,11 +49,3 @@ class SumStat():
         # Binning values using np.histogram
         self.mark = axes.bars(np.histogram(self.arr,range=(0,1), bins=20))
         return self.mark
-
-    def consensus_cloud_tree(self, trees, consensus):
-        """
-        Function that takes dataframe as input and plots stacked plots from toyplot
-        """
-        #canvas = toyplot.Canvas(width=600, height=400)
-        #axes = 
-    pass
