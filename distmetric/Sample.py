@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Sampling and generating random trees for phylogenetic calcluations downstream
+Sampling and generating random trees for downstream phylogenetic calcluations
 """
 
 import toytree
@@ -72,4 +72,3 @@ class Generator:
         #self.trees = toytree.mtree(self.trees)
     
         return self.trees
-
