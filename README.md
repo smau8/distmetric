@@ -1,4 +1,5 @@
 # distmetric
+## Calculating distance metrics between phylogenetic trees
 The goal of the project is to create an installable package written in Python that measures distances between 
 phylogenetic trees using different methods/metrics. `distmetric` will be used to complement existing Python phylogenomic tree libraries and support growing Python package development in phylogenetics. The package will primarily be focused on being used in API (Jupyter Notebook).
 
