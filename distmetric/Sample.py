@@ -68,7 +68,5 @@ class Generator:
             toytree.rtree.unittree(ntips=self.ntips, treeheight=self.treeheight)    
             for i in range(self.ntrees)
         ]
-        # save as toytree multitree
-        #self.trees = toytree.mtree(self.trees)
     
         return self.trees
